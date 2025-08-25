@@ -1,0 +1,11 @@
+.management {
+  padding-top: 20px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.management-container {
+  width: 800px;
+  text-align: center;
+}
