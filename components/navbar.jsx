@@ -8,11 +8,13 @@ import ShoppingCart from "@/svg/ShoppingCart";
 import Minus from "@/svg/Minus";
 import Add from "@/svg/Add";
 import Menu from "@/svg/Menu";
+import { usePathname } from "next/navigation";
 
 export default function Navbar({ setCart, cart }) {
   const [open, setOpen] = useState(false);
   const [isCartEmpty, setIsCartEmpty] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const handleIncrease = (index, priceId) => {
     let element = document.getElementById(index);
@@ -72,25 +74,29 @@ export default function Navbar({ setCart, cart }) {
                 <Search />
               </div>
               <div className="navbar-menu-list">
-                <Link href="">All</Link>
-                <Link href="">Trending</Link>
-                <Link href="">Dresses</Link>
+                <Link href="">{pathname === "/" ? "All" : "모두"}</Link>
+                <Link href="">{pathname === "/" ? "Dresses" : "드레스"}</Link>
+                <Link href="">
+                  {pathname === "/" ? "Trending" : "인기 급상승"}
+                </Link>
               </div>
             </div>
           </div>
         )}
         <div className="navbar-logo text-sm">ACME STORE</div>
         <div className="navbar-list">
-          <Link href="">All</Link>
-          <Link href="">Trending</Link>
-          <Link href="">Dresses</Link>
+          <Link href="">{pathname === "/" ? "All" : "모두"}</Link>
+          <Link href="">{pathname === "/" ? "Dresses" : "드레스"}</Link>
+          <Link href="">{pathname === "/" ? "Trending" : "인기 급상승"}</Link>
         </div>
       </div>
       <div className="navbar-search rounded-md">
         <input
           className="text-sm"
           type="text"
-          placeholder="Search for products..."
+          placeholder={
+            pathname === "/" ? "Search for products..." : "제품 검색..."
+          }
         />
         <Search />
       </div>
@@ -104,7 +110,9 @@ export default function Navbar({ setCart, cart }) {
         <div className="cart-item">
           <div className="cart-item-container">
             <div className="cart-header">
-              <p className="text-lg font-semibold">My Cart</p>
+              <p className="text-lg font-semibold">
+                {pathname === "/" ? "My Cart" : "내 장바구니"}
+              </p>
               <div className="navbar-cart-icon" onClick={() => setOpen(false)}>
                 <Close />
               </div>
@@ -113,7 +121,11 @@ export default function Navbar({ setCart, cart }) {
               {cart.length === 0 ? (
                 <div className="shopping-cart">
                   <ShoppingCart />
-                  <p>Your cart is empty</p>
+                  <p>
+                    {pathname === "/"
+                      ? "Your cart is empty"
+                      : "장바구니가 비어 있습니다."}
+                  </p>
                 </div>
               ) : (
                 <div className="shopping">
@@ -134,8 +146,9 @@ export default function Navbar({ setCart, cart }) {
                         <p>{item.name}</p>
                         <div className="cart-price">
                           <p className="text-sm">
-                            $<span id={`price${index}`}>{item.price}</span> .00
-                            USD
+                            {pathname === "/" ? "$" : "₩"}
+                            <span id={`price${index}`}>{item.price}</span>
+                            {totalAmount} {pathname === "/" ? "USD" : "KRW"}
                           </p>
                           {/*<div className="cart-update">*/}
                           {/*  <div*/}
@@ -161,22 +174,36 @@ export default function Navbar({ setCart, cart }) {
 
                   <div className="checkout">
                     <div className="checkout-item">
-                      <p className="checkout-">Taxes</p>
-                      <p className="checkout-item-white">$0.00 USD</p>
-                    </div>
-                    <div className="checkout-item">
-                      <p>Shipping</p>
-                      <p>Calculated at checkout</p>
-                    </div>
-                    <div className="checkout-item">
-                      <p>Total</p>
+                      <p className="checkout-">
+                        {pathname === "/" ? "Taxes" : "구실"}
+                      </p>
                       <p className="checkout-item-white">
-                        ${totalAmount}.00 USD
+                        {pathname === "/" ? "$" : "₩"}0.00{" "}
+                        {pathname === "/" ? "USD" : "KRW"}
+                      </p>
+                    </div>
+                    <div className="checkout-item">
+                      <p>{pathname === "/" ? "Shipping" : "해운"}</p>
+                      <p>
+                        {pathname === "/"
+                          ? "Calculated at checkout"
+                          : "결제 시 계산됨"}{" "}
+                      </p>
+                    </div>
+                    <div className="checkout-item">
+                      <p>{pathname === "/" ? "Total" : "총"}</p>
+                      <p className="checkout-item-white">
+                        {pathname === "/" ? "$" : "₩"}
+                        {totalAmount} {pathname === "/" ? "USD" : "KRW"}
                       </p>
                     </div>
                     <div className="checkout-button" onClick={clearCart}>
                       <Link href="/management">
-                        <button className="text-sm">Proceed to Checkout</button>
+                        <button className="text-sm">
+                          {pathname === "/"
+                            ? "Proceed to Checkout"
+                            : "결제로 진행"}{" "}
+                        </button>
                       </Link>
                     </div>
                   </div>
